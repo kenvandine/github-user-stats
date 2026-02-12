@@ -1,0 +1,6 @@
+#!/bin/sh
+set -e
+
+snapctl set port=80
+# allowed-users intentionally left unset; all users allowed by default
+# github-token intentionally left unset; app falls back to REST API

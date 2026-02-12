@@ -1,0 +1,82 @@
+name: github-user-stats
+version: '1.0'
+summary: GitHub user statistics SVG card generator
+description: |
+  A FastAPI service that generates SVG stats cards for GitHub users,
+  similar to github-readme-stats. Packaged with an nginx reverse proxy
+  that runs automatically as a daemon.
+
+  ## Features
+
+  - GraphQL API with token for accurate lifetime stats
+  - REST API fallback without a token
+  - 52 built-in color themes
+  - In-memory caching with stale-serving on rate limit
+  - Configurable username allowlist
+
+  ## Configuration
+
+  Set the public listening port:
+
+      sudo snap set github-user-stats port=8080
+
+  Restrict which GitHub users can be queried:
+
+      sudo snap set github-user-stats allowed-users=kenvandine,octocat
+
+  Add a GitHub token for GraphQL access and higher rate limits:
+
+      sudo snap set github-user-stats github-token=ghp_xxxxxxxxxxxx
+
+base: core24
+confinement: strict
+license: GPL-3.0
+issues: https://github.com/kenvandine/github-user-stats/issues
+contact: https://github.com/kenvandine/github-user-stats/issues
+website: https://github.com/kenvandine/github-user-stats
+source-code: https://github.com/kenvandine/github-user-stats
+
+parts:
+  github-user-stats:
+    plugin: python
+    source: .
+    python-requirements:
+      - requirements.txt
+
+  nginx:
+    plugin: nil
+    stage-packages:
+      - nginx-light
+
+  app-source:
+    plugin: dump
+    source: .
+    stage:
+      - app/
+
+  wrappers:
+    plugin: dump
+    source: snap/local/
+    organize:
+      start-uvicorn.sh: bin/start-uvicorn.sh
+      start-nginx.sh: bin/start-nginx.sh
+      reload-nginx.sh: bin/reload-nginx.sh
+      nginx.conf.template: templates/nginx.conf.template
+
+apps:
+  uvicorn:
+    command: bin/start-uvicorn.sh
+    daemon: simple
+    plugs:
+      - network
+      - network-bind
+
+  nginx:
+    command: bin/start-nginx.sh
+    daemon: simple
+    reload-command: bin/reload-nginx.sh
+    after:
+      - uvicorn
+    plugs:
+      - network
+      - network-bind

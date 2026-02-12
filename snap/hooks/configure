@@ -1,0 +1,27 @@
+#!/bin/sh
+set -e
+
+# --- Validate port ---
+PORT="$(snapctl get port)"
+if ! echo "$PORT" | grep -qE '^[0-9]+$'; then
+    echo "Error: port must be a numeric value, got '$PORT'" >&2
+    exit 1
+fi
+if [ "$PORT" -lt 1 ] || [ "$PORT" -gt 65535 ]; then
+    echo "Error: port must be between 1 and 65535, got '$PORT'" >&2
+    exit 1
+fi
+
+# --- Read other settings (no validation needed) ---
+ALLOWED_USERS="$(snapctl get allowed-users)"
+GITHUB_TOKEN="$(snapctl get github-token)"
+
+# --- Regenerate nginx config from template ---
+mkdir -p "$SNAP_DATA/nginx"
+sed -e "s|@PORT@|${PORT}|g" \
+    -e "s|@SNAP_DATA@|${SNAP_DATA}|g" \
+    "$SNAP/templates/nginx.conf.template" > "$SNAP_DATA/nginx/nginx.conf"
+
+# --- Restart services to pick up new settings ---
+snapctl restart "$SNAP_NAME.uvicorn"
+snapctl restart "$SNAP_NAME.nginx"
