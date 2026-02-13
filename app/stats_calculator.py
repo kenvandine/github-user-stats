@@ -6,6 +6,7 @@ from dataclasses import dataclass
 class RankResult:
     level: str
     percentile: float
+    percentage: float
 
 
 def _normal_cdf(x: float) -> float:
@@ -74,6 +75,7 @@ def calculate_rank(
 
     # Score is 0-1, convert to percentile (100 = best)
     percentile = score * 100
+    percentage = 100 - percentile
 
     # Determine grade
     if percentile >= 95:
@@ -95,7 +97,11 @@ def calculate_rank(
     else:
         level = "C"
 
-    return RankResult(level=level, percentile=round(percentile, 1))
+    return RankResult(
+        level=level,
+        percentile=round(percentile, 1),
+        percentage=round(100 - percentile, 1),
+    )
 
 
 def k_format(n: int) -> str:
