@@ -108,7 +108,6 @@ async def fetch_user_stats(username: str) -> UserStats:
         raise GitHubUserNotFoundError(f"Invalid username: {username}")
 
     token = _get_github_token()
-    print(token)
     if token:
         return await _fetch_user_stats_graphql(username, token)
     return await _fetch_user_stats_rest(username)
