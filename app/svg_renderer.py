@@ -269,6 +269,7 @@ def _build_style(
         f'.section-heading {{ font: 700 14px "Segoe UI", Ubuntu, Sans-Serif; fill: #{colors.text_color}; }}'
         f'.rank-letter {{ font: 800 24px "Segoe UI", Ubuntu, Sans-Serif; fill: #{colors.text_color}; }}'
         f'.rank-percentile {{ font: 400 12px "Segoe UI", Ubuntu, Sans-Serif; fill: #{colors.text_color}; }}'
+        f'.percentage {{ font: 400 12px "Segoe UI", Ubuntu, Sans-Serif; fill: #{colors.text_color}; }}'
         f"{animation_css}"
         "</style>"
     )
@@ -347,7 +348,7 @@ def _render_rank_circle(
         f'stroke-linecap="round" transform="rotate(-90)"/>'
         f'<text class="rank-letter" text-anchor="middle" dominant-baseline="central" y="-5">'
         f"{escape(rank.level)}</text>"
-        f'<text class="rank-percentage" text-anchor="middle" dominant-baseline="central" y="15">'
+        f'<text class="rank-percentile" text-anchor="middle" dominant-baseline="central" y="15">'
         f"Top {rank.percentage}%</text>"
         f"</g>"
     )
