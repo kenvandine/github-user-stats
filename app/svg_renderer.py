@@ -46,7 +46,9 @@ def render_stats_card(
 
     title = escape(custom_title or f"{stats.name}'s GitHub Stats")
 
-    border_stroke = "" if hide_border else f'stroke="#{colors.border_color}" stroke-opacity="1"'
+    border_stroke = (
+        "" if hide_border else f'stroke="#{colors.border_color}" stroke-opacity="1"'
+    )
 
     parts = [
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{card_width}" height="{card_height}" viewBox="0 0 {card_width} {card_height}" fill="none">',
@@ -66,9 +68,13 @@ def render_stats_card(
         y = stats_start_y + i * line_height
         delay = i * 150
         if item.get("type") == "heading":
-            parts.append(_render_section_heading(item, y, colors, delay, disable_animations))
+            parts.append(
+                _render_section_heading(item, y, colors, delay, disable_animations)
+            )
         else:
-            parts.append(_render_stat_row(item, y, show_icons, colors, delay, disable_animations))
+            parts.append(
+                _render_stat_row(item, y, show_icons, colors, delay, disable_animations)
+            )
 
     # Rank circle
     if not hide_rank:
@@ -82,6 +88,7 @@ def render_error_card(message: str, colors: ThemeColors | None = None) -> str:
     """Render an SVG error card."""
     if colors is None:
         from .themes import THEMES
+
         colors = THEMES["default"]
 
     escaped_msg = escape(message)
@@ -221,7 +228,9 @@ def _calc_merged_pct(merged: int, total: int) -> str:
     return f"{(merged / total) * 100:.1f}%"
 
 
-def _build_style(colors: ThemeColors, disable_animations: bool, line_height: int) -> str:
+def _build_style(
+    colors: ThemeColors, disable_animations: bool, line_height: int
+) -> str:
     """Build the CSS style block."""
     animation_css = ""
     if not disable_animations:
@@ -280,7 +289,12 @@ def _render_section_heading(
 
 
 def _render_stat_row(
-    item: dict, y: int, show_icons: bool, colors: ThemeColors, delay: int, disable_animations: bool
+    item: dict,
+    y: int,
+    show_icons: bool,
+    colors: ThemeColors,
+    delay: int,
+    disable_animations: bool,
 ) -> str:
     """Render a single stat row."""
     anim_style = "" if disable_animations else f' style="animation-delay: {delay}ms"'
@@ -333,7 +347,7 @@ def _render_rank_circle(
         f'stroke-linecap="round" transform="rotate(-90)"/>'
         f'<text class="rank-letter" text-anchor="middle" dominant-baseline="central" y="-5">'
         f"{escape(rank.level)}</text>"
-        f'<text class="rank-percentile" text-anchor="middle" dominant-baseline="central" y="15">'
-        f"Top {rank.percentile}%</text>"
+        f'<text class="rank-percentage" text-anchor="middle" dominant-baseline="central" y="15">'
+        f"Top {rank.percentage}%</text>"
         f"</g>"
     )

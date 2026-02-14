@@ -173,9 +173,7 @@ async def _fetch_user_stats_graphql(username: str, token: str) -> UserStats:
 
             # Sum stars from repos (first page already in response)
             repos_data = user["repositories"]
-            total_stars = sum(
-                node["stargazerCount"] for node in repos_data["nodes"]
-            )
+            total_stars = sum(node["stargazerCount"] for node in repos_data["nodes"])
 
             # Paginate remaining repos for star counts
             page_info = repos_data["pageInfo"]
@@ -210,7 +208,9 @@ async def _fetch_user_stats_graphql(username: str, token: str) -> UserStats:
         except (GitHubUserNotFoundError, GitHubRateLimitError):
             raise
         except Exception as e:
-            logger.warning("GraphQL fetch failed for %s: %s, falling back to REST", username, e)
+            logger.warning(
+                "GraphQL fetch failed for %s: %s, falling back to REST", username, e
+            )
             return await _fetch_user_stats_rest(username)
 
     stats.from_graphql = True
