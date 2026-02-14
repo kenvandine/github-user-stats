@@ -75,6 +75,7 @@ def calculate_rank(
 
     # Score is 0-1, convert to percentile (100 = best)
     percentile = score * 100
+    percentage = 100 - percentile
 
     # Determine grade
     if percentile >= 95:
