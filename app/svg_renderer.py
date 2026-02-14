@@ -269,6 +269,7 @@ def _build_style(
         f'.section-heading {{ font: 700 14px "Segoe UI", Ubuntu, Sans-Serif; fill: #{colors.text_color}; }}'
         f'.rank-letter {{ font: 800 24px "Segoe UI", Ubuntu, Sans-Serif; fill: #{colors.text_color}; }}'
         f'.rank-percentile {{ font: 400 12px "Segoe UI", Ubuntu, Sans-Serif; fill: #{colors.text_color}; }}'
+        f'.percentage {{ font: 400 12px "Segoe UI", Ubuntu, Sans-Serif; fill: #{colors.text_color}; }}'
         f"{animation_css}"
         "</style>"
     )
