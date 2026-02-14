@@ -348,7 +348,7 @@ def _render_rank_circle(
         f'stroke-linecap="round" transform="rotate(-90)"/>'
         f'<text class="rank-letter" text-anchor="middle" dominant-baseline="central" y="-5">'
         f"{escape(rank.level)}</text>"
-        f'<text class="rank-percentage" text-anchor="middle" dominant-baseline="central" y="15">'
+        f'<text class="rank-percentile" text-anchor="middle" dominant-baseline="central" y="15">'
         f"Top {rank.percentage}%</text>"
         f"</g>"
     )
