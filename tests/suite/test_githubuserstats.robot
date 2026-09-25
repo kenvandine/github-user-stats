@@ -5,6 +5,6 @@ Resource         kvm.resource
 
 *** Test Cases ***
 Github User Stats Launches And Renders
-    [Documentation]    Verify github-user-stats snap launches and renders a UI on Mir
+    [Documentation]    Verify github-user-stats snap launches and renders a UI on a real GNOME desktop session (no Mir compositor or VNC required)
     [Tags]    smoke    yarf:certification_status: blocker
     Log Screenshot
